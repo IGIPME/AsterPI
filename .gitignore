@@ -1,0 +1,7 @@
+.cargo/*
+!.cargo/config.toml
+
+target/
+
+.pixi/*
+!.pixi/config.toml

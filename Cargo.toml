@@ -1,0 +1,23 @@
+[workspace]
+members = [
+    "crates/kernel",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+authors = ["Solomon Captain"]
+
+[workspace.dependencies]
+anyhow = "1.0.104"
+include_dir = "0.7.4"
+serde = "1.0.229"
+tera = "2.2.0"
+toml = "1.1.4+spec-1.1.0"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+opt-level = "z"

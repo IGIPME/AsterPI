@@ -1,0 +1,12 @@
+[package]
+name = "kernel"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+include_dir.workspace = true
+serde = { workspace = true, features = ["derive"] }
+tera.workspace = true
+toml.workspace = true
