@@ -7,5 +7,5 @@ version = "1.0"
 project-name = { prompt = "项目名称", default = "NewNetworkProject" }
 project-version = { prompt = "项目版本", default = "0.1.0" }
 description = { prompt = "项目描述", default = "一个 AsterPI Network 项目" }
-authors = { prompt = "作者", default = "unknown" }
+author = { prompt = "作者", default = "unknown" }
 platform = { prompt = "平台", default = "linux-64" }

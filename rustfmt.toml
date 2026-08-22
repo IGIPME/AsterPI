@@ -11,7 +11,7 @@ match_block_trailing_comma = true
 
 # 导入排序
 reorder_imports = true
-reroder_modules = true
+reorder_modules = true
 
 # 简写风格
 use_field_init_shorthand = true
