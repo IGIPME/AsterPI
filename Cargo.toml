@@ -1,8 +1,11 @@
 [workspace]
 members = [
     "crates/api-cli",
+    "crates/app",
+    "crates/frontend",
     "crates/kernel",
     "crates/protocol",
+    "crates/server",
 ]
 resolver = "2"
 
@@ -12,6 +15,24 @@ edition = "2024"
 authors = ["Solomon Captain"]
 
 [workspace.dependencies]
+leptos = "0.8.20"
+leptos_meta = "0.8.6"
+leptos_router = "0.8.15"
+leptos_axum = "0.8.10"
+
+axum = "0.8.9"
+cfg-if = "1.0.4"
+console_error_panic_hook = "0.1.7"
+console_log = "1.1.0"
+http = "1.5.0"
+log = "0.4.34"
+simple_logger = "5.2.0"
+thiserror = "2.0.20"
+tokio = { version = "1.53.1", features = ["full"] }
+tower = { version = "0.5.3", features = ["full"] }
+tower-http = { version = "0.7.0", features = ["full"] }
+wasm-bindgen = "0.2.127"
+
 anyhow = "1.0.104"
 clap = "4.6.6"
 colored = "3.1.1"
@@ -19,6 +40,26 @@ include_dir = "0.7.4"
 serde = "1.0.229"
 tera = "2.2.0"
 toml = "1.1.4+spec-1.1.0"
+
+[[workspace.metadata.leptos]]
+name = "asterpi"
+bin-package = "server"
+lib-package = "frontend"
+site-root = "target/site"
+site-pkg-dir = "pkg"
+style-file = "assets/style/main.scss"
+assets-dir = "assets/public"
+site-addr = "127.0.0.1:3879"
+reload-port = 3880
+end2end-cmd = "npx playwright test"
+end2end-dir = "tests/end2end"
+browserquery = "defaults"
+watch = false
+env = "DEV"
+bin-features = []
+bin-default-features = false
+lib-features = []
+lib-default-features = false
 
 [profile.release]
 lto = true

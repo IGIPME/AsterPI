@@ -2,6 +2,14 @@
 !.cargo/config.toml
 
 target/
+pkg
+
+**/*.rs.bk
+
+node_modules/
+test-results/
+tests/end2end/playwright-report/
+playwright/.cache/
 
 .idea/*
 
