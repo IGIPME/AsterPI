@@ -1,9 +1,17 @@
+pub mod components;
+pub mod pages;
+
+use crate::components::Navbar;
 use leptos::prelude::*;
 use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
 use leptos_router::{
     StaticSegment,
     components::{Route, Router, Routes},
 };
+use crate::pages::HomePage;
+
+include!(concat!(env!("OUT_DIR"), "/i18n/mod.rs"));
+use i18n::*;
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
     view! {
@@ -31,24 +39,16 @@ pub fn App() -> impl IntoView {
         <Stylesheet id="leptos" href="/pkg/asterpi.css"/>
 
         <Title text="Welcome to Leptos!"/>
+        <I18nContextProvider>
+            <Navbar/>
 
-        <Router>
-            <main>
-                <Routes fallback=|| "Page not found.".into_view()>
-                    <Route path=StaticSegment("") view=HomePage/>
-                </Routes>
-            </main>
-        </Router>
-    }
-}
-
-#[component]
-fn HomePage() -> impl IntoView {
-    let count = RwSignal::new(0);
-    let on_click = move |_| *count.write() += 1;
-
-    view! {
-        <h1>"Welcome to Leptos!"</h1>
-        <button on:click=on_click>"Click Me: " {count}</button>
+            <Router>
+                <main>
+                    <Routes fallback=|| "Page not found.".into_view()>
+                        <Route path=StaticSegment("") view=HomePage/>
+                    </Routes>
+                </main>
+            </Router>
+        </I18nContextProvider>
     }
 }

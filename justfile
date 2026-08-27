@@ -13,6 +13,10 @@ run:
 reload:
     cargo leptos watch
 
+# 启动 Tilt
+tilt:
+    tilt up
+
 # 运行 Rust 测试
 test:
     cargo test
@@ -24,7 +28,9 @@ check:
     cargo check -p frontend
     cargo check -p kernel
     cargo check -p protocol
+    cargo check -p renderer
     cargo check -p server
+    cargo check -p worker
 
 # 调用 rustfmt 工具
 fmt:
@@ -37,7 +43,9 @@ clippy:
     cargo clippy -p frontend -- -D warnings
     cargo clippy -p kernel -- -D warnings
     cargo clippy -p protocol -- -D warnings
+    cargo clippy -p renderer -- -D warnings
     cargo clippy -p server -- -D warnings
+    cargo clippy -p worker -- -D warnings
 
 # 清理构建产物
 [windows]
