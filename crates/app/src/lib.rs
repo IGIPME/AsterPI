@@ -1,7 +1,8 @@
 pub mod components;
 pub mod pages;
+pub mod icons;
 
-use crate::components::Navbar;
+use crate::components::AppLayout;
 use leptos::prelude::*;
 use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
 use leptos_router::{
@@ -40,12 +41,10 @@ pub fn App() -> impl IntoView {
 
         <Title text="Welcome to Leptos!"/>
         <I18nContextProvider>
-            <Navbar/>
-
             <Router>
                 <main>
                     <Routes fallback=|| "Page not found.".into_view()>
-                        <Route path=StaticSegment("") view=HomePage/>
+                        <Route path=StaticSegment("") view=AppLayout/>
                     </Routes>
                 </main>
             </Router>

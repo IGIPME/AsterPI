@@ -1,4 +1,430 @@
-body {
-  font-family: sans-serif;
-  text-align: center;
+// 颜色变量
+$nav-bg: #1f1f1f;
+$nav-text: #ffffff;
+$nav-text-secondary: #a0a0a0;
+$nav-hover-bg: rgba(255, 255, 255, 0.08);
+$nav-active-bg: rgba(255, 255, 255, 0.15);
+$border-color: #3a3a3a;
+$sidebar-bg: #1a1a1a;
+$sidebar-width: 240px;
+$sidebar-collapsed-width: 60px;
+$topbar-height: 50px;
+
+// 顶部导航栏
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $topbar-height;
+  background: $nav-bg;
+  border-bottom: 1px solid $border-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 1000;
+  color: $nav-text;
+
+  // 左侧区域
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      color: $nav-text;
+      text-decoration: none;
+
+      svg {
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    .divider {
+      width: 1px;
+      height: 24px;
+      background: $border-color;
+    }
+
+    .project-selector {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      color: $nav-text-secondary;
+      transition: background 0.2s;
+
+      &:hover {
+        background: $nav-hover-bg;
+      }
+
+      .chevron {
+        font-size: 12px;
+        transition: transform 0.2s;
+      }
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      padding: 4px 12px;
+      margin-left: 8px;
+      flex: 0 1 300px;
+      min-width: 120px;
+      border: 1px solid transparent;
+      transition: border-color 0.2s, background 0.2s;
+
+      &:focus-within {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: #4a9eff;
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+        color: $nav-text-secondary;
+        margin-right: 8px;
+        flex-shrink: 0;
+      }
+
+      input {
+        background: transparent;
+        border: none;
+        outline: none;
+        color: $nav-text;
+        font-size: 13px;
+        width: 100%;
+        padding: 4px 0;
+
+        &::placeholder {
+          color: $nav-text-secondary;
+        }
+      }
+    }
+  }
+
+  // 右侧区域
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .nav-icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 4px;
+      background: transparent;
+      border: none;
+      color: $nav-text-secondary;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      position: relative;
+
+      &:hover {
+        background: $nav-hover-bg;
+        color: $nav-text;
+      }
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .badge {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ff4b4b;
+        border: 2px solid $nav-bg;
+      }
+
+      // 头像特殊处理
+      &.avatar {
+        padding: 0;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    // 键盘快捷键显示
+    .kbd-hint {
+      font-size: 11px;
+      color: $nav-text-secondary;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+      margin-left: 2px;
+    }
+  }
+}
+
+// 侧边栏
+.sidebar {
+  position: fixed;
+  top: $topbar-height;
+  left: 0;
+  bottom: 0;
+  width: $sidebar-width;
+  background: $sidebar-bg;
+  border-right: 1px solid $border-color;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.25s ease;
+  z-index: 900;
+  padding-top: 8px;
+
+  // 折叠状态
+  &.collapsed {
+    width: $sidebar-collapsed-width;
+
+    .nav-item .label {
+      opacity: 0;
+      width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .nav-item .icon {
+      margin-right: 0;
+    }
+
+    .sidebar-section-title {
+      opacity: 0;
+      height: 0;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .sidebar-footer {
+      .label {
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+      }
+    }
+
+    // 折叠时在图标上显示 tooltip（通过 title 属性实现）
+    .nav-item {
+      justify-content: center;
+    }
+  }
+
+  // 侧边栏滚动条样式
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $border-color;
+    border-radius: 2px;
+  }
+
+  .sidebar-section-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $nav-text-secondary;
+    padding: 16px 16px 8px 16px;
+    transition: opacity 0.2s, height 0.2s, padding 0.2s;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    margin: 2px 8px;
+    border-radius: 6px;
+    color: $nav-text-secondary;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    gap: 12px;
+    white-space: nowrap;
+    font-size: 14px;
+
+    &:hover {
+      background: $nav-hover-bg;
+      color: $nav-text;
+    }
+
+    // 激活状态
+    &.active {
+      background: $nav-active-bg;
+      color: $nav-text;
+      font-weight: 500;
+      
+      .icon {
+        color: #4a9eff;
+      }
+    }
+    
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: $nav-text-secondary;
+      transition: color 0.15s;
+      
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+    
+    .label {
+      transition: opacity 0.2s, width 0.2s;
+      overflow: hidden;
+    }
+    
+    // 子菜单展开/折叠指示器
+    .submenu-toggle {
+      margin-left: auto;
+      font-size: 12px;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+      
+      &.open {
+        transform: rotate(90deg);
+      }
+    }
+    
+    // 子菜单项（缩进）
+    &.sub-item {
+      padding-left: 44px;
+      font-size: 13px;
+    }
+  }
+  
+  // 侧边栏底部（用户信息/设置）
+  .sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 1px solid $border-color;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: $sidebar-bg;
+    
+    .avatar-small {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: #4a9eff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .user-info {
+      flex: 1;
+      min-width: 0;
+      
+      .name {
+        font-size: 13px;
+        color: $nav-text;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .username {
+        font-size: 12px;
+        color: $nav-text-secondary;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    
+    .label {
+      transition: opacity 0.2s, width 0.2s;
+      overflow: hidden;
+    }
+  }
+}
+
+// 折叠切换按钮
+.collapse-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  color: $nav-text-secondary;
+  cursor: pointer;
+  transition: color 0.2s;
+  
+  &:hover {
+    color: $nav-text;
+  }
+  
+  svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.25s;
+  }
+  
+  // 当侧边栏折叠时，旋转图标
+  &.rotated svg {
+    transform: rotate(180deg);
+  }
+}
+
+// 主内容区域
+.main-content {
+  margin-top: $topbar-height;
+  margin-left: $sidebar-width;
+  padding: 24px;
+  min-height: calc(100vh - #{$topbar-height});
+  transition: margin-left 0.25s ease;
+  background: #0d0d0d;
+  
+  &.expanded {
+    margin-left: $sidebar-collapsed-width;
+  }
 }
