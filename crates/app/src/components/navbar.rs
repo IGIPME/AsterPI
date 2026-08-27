@@ -1,13 +1,14 @@
 use crate::icons::*;
 use leptos::prelude::*;
-use leptos_router::components::A;
+use leptos_router::hooks::use_navigate;
+use leptos_router::NavigateOptions;
 
 // 导航项数据结构
 #[derive(Clone)]
 pub struct NavItem {
     pub label: &'static str,
     pub path: &'static str,
-    pub icon: fn() -> impl IntoView,
+    pub icon: fn() -> AnyView,
 }
 
 // 顶部导航栏
@@ -76,18 +77,23 @@ pub fn Sidebar(
     #[prop(into)] collapsed: RwSignal<bool>,
     #[prop(into)] active_path: Signal<String>,
 ) -> impl IntoView {
+    let navigate = use_navigate();
+
     // 导航菜单项
     let nav_items = vec![
-        NavItem { label: "项目", path: "/projects", icon: IconHome },
-        NavItem { label: "代码仓库", path: "/repos", icon: IconCode },
-        NavItem { label: "议题", path: "/issues", icon: IconIssue },
-        NavItem { label: "合并请求", path: "/merge_requests", icon: IconMerge },
-        NavItem { label: "设置", path: "/settings", icon: IconSettings },
+        NavItem { label: "项目", path: "/projects", icon: || IconHome().into_any() },
+        NavItem { label: "代码仓库", path: "/repos", icon: || IconCode().into_any() },
+        NavItem { label: "议题", path: "/issues", icon: || IconIssue().into_any() },
+        NavItem { label: "合并请求", path: "/merge_requests", icon: || IconMerge().into_any() },
+        NavItem { label: "设置", path: "/settings", icon: || IconSettings().into_any() },
     ];
 
     let is_active = move |path: &str| {
-        let current = active_path.get();
-        current == path || (path != "/" && current.starts_with(path))
+        let path = path.to_string();
+        move || {
+            let current = active_path.get();
+            current == path || (path != "/" && current.starts_with(&path))
+        }
     };
 
     view! {
@@ -99,16 +105,21 @@ pub fn Sidebar(
                 let label = item.label;
                 let icon = item.icon;
                 let active = is_active(path);
+                let navigate = navigate.clone();
                 view! {
-                    <A
+                    <a
                         href=path
-                        class=("nav-item", true)
-                        class:active=move || active
+                        class="nav-item"
+                        class:active=active
                         title=move || if collapsed.get() { label } else { "" }
+                        on:click=move |ev| {
+                            ev.prevent_default();
+                            let _ = navigate(path, NavigateOptions::default());
+                        }
                     >
                         <span class="icon">{icon()}</span>
                         <span class="label">{label}</span>
-                    </A>
+                    </a>
                 }
             }).collect_view()}
 
@@ -122,7 +133,7 @@ pub fn Sidebar(
                     <div class="username">@username</div>
                 </div>
                 <button
-                    class=("collapse-toggle", true)
+                    class="collapse-toggle"
                     class:rotated=move || !collapsed.get()
                     on:click=move |_| collapsed.update(|c| *c = !*c)
                     title=move || if collapsed.get() { "展开侧边栏" } else { "折叠侧边栏" }

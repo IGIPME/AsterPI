@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: asterpi
+spec:
+  selector:
+    app: asterpi
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asterpi
+spec:
+  selector:
+    matchLabels:
+      app: asterpi
+  template:
+    metadata:
+      labels:
+        app: asterpi
+    spec:
+      containers:
+        - name: asterpi
+          image: asterpi
+          ports:
+            - containerPort: 3000

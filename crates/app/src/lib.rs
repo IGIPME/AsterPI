@@ -9,7 +9,6 @@ use leptos_router::{
     StaticSegment,
     components::{Route, Router, Routes},
 };
-use crate::pages::HomePage;
 
 include!(concat!(env!("OUT_DIR"), "/i18n/mod.rs"));
 use i18n::*;
