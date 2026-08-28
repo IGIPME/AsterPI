@@ -17,6 +17,9 @@
 <div>
     <img alt="stars" src="https://img.shields.io/github/stars/IGIPME/AsterPI?style=social">
 </div>
+<div>
+    <img alt="sonar" src="https://sonarq.zeabur.app/api/project_badges/measure?project=AsterPI&metric=software_quality_reliability_rating&token=sqb_2c5249649bdf3b1e9d98d4781065b589d9be4e88">
+</div>
 <br>
 
 <!-- markdownlint-restore -->

@@ -17,6 +17,14 @@ reload:
 tilt:
     tilt up
 
+# 启动本地 kind 集群（带 registry）
+cluster-up:
+    ctlptl apply -f ctlptl-cluster.yaml
+
+# 删除本地 kind 集群
+cluster-down:
+    ctlptl delete cluster kind-asterpi
+
 # 运行 Rust 测试
 test:
     cargo test
