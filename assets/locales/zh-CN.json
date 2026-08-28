@@ -1,3 +1,15 @@
 {
-  "dashboard": "仪表盘"
+  "project": "项目",
+  "group": "组",
+  "search": "搜索或跳转到...",
+  "new": "新建",
+  "todo": "代办事项",
+  "notice": "通知",
+  "user": "用户",
+  "code": "代码仓库",
+  "issue": "议题",
+  "merge_request": "合并请求",
+  "settings": "设置",
+  "menu": "菜单",
+  "unfold_sidebar": "展开侧边栏"
 }

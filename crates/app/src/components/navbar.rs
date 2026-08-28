@@ -1,5 +1,7 @@
 use crate::icons::*;
+use crate::i18n::use_i18n;
 use leptos::prelude::*;
+use leptos_i18n::t;
 use leptos_router::hooks::use_navigate;
 use leptos_router::NavigateOptions;
 
@@ -14,6 +16,8 @@ pub struct NavItem {
 // 顶部导航栏
 #[component]
 pub fn TopNavbar() -> impl IntoView {
+    let i18n = use_i18n();
+
     view! {
         <nav class="top-navbar">
             {/* 左侧 */}
@@ -29,7 +33,9 @@ pub fn TopNavbar() -> impl IntoView {
                 <span class="divider"></span>
 
                 <div class="project-selector">
-                    <span>项目 / 组</span>
+                    <span>
+                        {t!(i18n, project)} / {t!(i18n, group)}
+                    </span>
                     <span class="chevron"><IconChevronDown/></span>
                 </div>
 
