@@ -38,7 +38,7 @@ pub fn App() -> impl IntoView {
     view! {
         <Stylesheet id="leptos" href="/pkg/asterpi.css"/>
 
-        <Title text="Welcome to Leptos!"/>
+        <Title text="AsterPI"/>
         <I18nContextProvider>
             <Router>
                 <main>

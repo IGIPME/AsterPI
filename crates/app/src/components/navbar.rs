@@ -83,6 +83,8 @@ pub fn Sidebar(
     #[prop(into)] collapsed: RwSignal<bool>,
     #[prop(into)] active_path: Signal<String>,
 ) -> impl IntoView {
+    let i18n = use_i18n();
+    
     let navigate = use_navigate();
 
     // 导航菜单项
@@ -104,7 +106,9 @@ pub fn Sidebar(
 
     view! {
         <aside class:sidebar=true class:collapsed=move || collapsed.get()>
-            <div class="sidebar-section-title">菜单</div>
+            <div class="sidebar-section-title">
+                {t!(i18n, menu)}
+            </div>
 
             {nav_items.into_iter().map(|item| {
                 let path = item.path;
@@ -135,7 +139,9 @@ pub fn Sidebar(
             <div class="sidebar-footer">
                 <div class="avatar-small">U</div>
                 <div class="user-info">
-                    <div class="name">用户</div>
+                    <div class="name">
+                        {t!(i18n, user)}
+                    </div>
                     <div class="username">@username</div>
                 </div>
                 <button
