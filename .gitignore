@@ -15,4 +15,5 @@ playwright/.cache/
 
 .pixi/*
 !.pixi/config.toml
+
 .bitfun/

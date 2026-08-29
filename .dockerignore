@@ -1,30 +1,46 @@
+# ===== Rust / Cargo =====
 target/
 **/target/
+# .cargo 里有大量本地缓存（registry/bin/global-cache），只需保留构建配置
+.cargo/*
+!.cargo/config.toml
 
+# ===== 前端 / Node =====
+node_modules/
+**/node_modules/
+docs/doc_build/
+
+# ===== IDE / 编辑器 =====
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
 
+# ===== 版本控制 =====
 .git/
 .gitignore
 .gitattributes
 
+# ===== 本仓库构建配置（Dockerfile 通过 -f 显式读取，不受此处排除影响）=====
 .dockerignore
-registry/
+# 排除 registry 下的 Dockerfile（由 -f 显式读取）；保留 nginx.conf 供 Dockerfile.docs COPY
+registry/Dockerfile*
 
+# ===== 文档与杂项 =====
 README.md
 LICENSE
-
 tests/
-node_modules/
-**/node_modules/
 
+# ===== 环境与日志 =====
 .env
 .env.*
 *.log
 .DS_Store
 Thumbs.db
 
+# ===== 本地工具配置 =====
 justfile
+Tiltfile
+kind-config.yaml
+pixi.toml

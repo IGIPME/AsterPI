@@ -1,3 +1,16 @@
 {
-  "dashboard": "Dashboard"
+  "project": "Projects",
+  "group": "Groups",
+  "search": "Search or jump to ...",
+  "new": "New",
+  "todo": "Todos",
+  "notice": "Notice",
+  "user": "User",
+  "code": "Code",
+  "issue": "Issue",
+  "merge_request": "Merge Request",
+  "settings": "Settings",
+  "menu": "Menu",
+  "fold_sidebar": "Fold sidebar",
+  "unfold_sidebar": "Unfold sidebar"
 }
