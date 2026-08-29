@@ -1,7 +1,7 @@
+use crate::components::navbar::*;
 use leptos::prelude::*;
 use leptos_router::components::Outlet;
 use leptos_router::hooks::use_location;
-use crate::components::navbar::*;
 
 #[component]
 pub fn AppLayout() -> impl IntoView {

@@ -1,6 +1,6 @@
 pub mod components;
-pub mod pages;
 pub mod icons;
+pub mod pages;
 
 use crate::components::AppLayout;
 use leptos::prelude::*;

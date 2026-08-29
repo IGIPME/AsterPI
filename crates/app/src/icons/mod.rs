@@ -1,4 +1,4 @@
-pub mod navbar;
 pub mod class;
+pub mod navbar;
 
 pub use navbar::*;

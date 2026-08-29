@@ -1,12 +1,12 @@
-use crate::icons::*;
 use crate::i18n::use_i18n;
+use crate::icons::*;
 use leptos::prelude::*;
-use leptos_i18n::t;
-use leptos_router::hooks::use_navigate;
+use leptos_i18n::{t, t_string};
 use leptos_router::NavigateOptions;
+use leptos_router::hooks::use_navigate;
 
 // 导航项数据结构
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub struct NavItem {
     pub label: &'static str,
     pub path: &'static str,
@@ -41,21 +41,21 @@ pub fn TopNavbar() -> impl IntoView {
 
                 <div class="search-box">
                     <IconSearch/>
-                    <input type="text" placeholder="搜索或跳转到..." />
+                    <input type="text" placeholder=move || t_string!(i18n, search) />
                     <span class="kbd-hint">K</span>
                 </div>
             </div>
 
             {/* 右侧 */}
             <div class="navbar-right">
-                <button class="nav-icon-btn" title="新建">
+                <button class="nav-icon-btn" title=move || t_string!(i18n, new)>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="12" y1="5" x2="12" y2="19"/>
                         <line x1="5" y1="12" x2="19" y2="12"/>
                     </svg>
                 </button>
 
-                <button class="nav-icon-btn" title="代办事项">
+                <button class="nav-icon-btn" title=move || t_string!(i18n, todo)>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                         <line x1="16" y1="2" x2="16" y2="6"/>
@@ -64,12 +64,12 @@ pub fn TopNavbar() -> impl IntoView {
                     </svg>
                 </button>
 
-                <button class="nav-icon-btn" title="通知">
+                <button class="nav-icon-btn" title=move || t_string!(i18n, notice)>
                     <IconBell/>
                     <span class="badge"></span>
                 </button>
 
-                <button class="nav-icon-btn avatar" title="用户">
+                <button class="nav-icon-btn avatar" title=move || t_string!(i18n, user)>
                     <img src="https://ui-avatars.com/api/?name=User&background=4a9eff&color=fff&size=34" alt="avatar" />
                 </button>
             </div>
@@ -78,23 +78,46 @@ pub fn TopNavbar() -> impl IntoView {
 }
 
 // 侧边栏
+#[allow(deprecated)]
 #[component]
 pub fn Sidebar(
     #[prop(into)] collapsed: RwSignal<bool>,
     #[prop(into)] active_path: Signal<String>,
 ) -> impl IntoView {
     let i18n = use_i18n();
-    
+
     let navigate = use_navigate();
 
     // 导航菜单项
-    let nav_items = vec![
-        NavItem { label: "项目", path: "/projects", icon: || IconHome().into_any() },
-        NavItem { label: "代码仓库", path: "/repos", icon: || IconCode().into_any() },
-        NavItem { label: "议题", path: "/issues", icon: || IconIssue().into_any() },
-        NavItem { label: "合并请求", path: "/merge_requests", icon: || IconMerge().into_any() },
-        NavItem { label: "设置", path: "/settings", icon: || IconSettings().into_any() },
-    ];
+    let nav_items = create_memo(move |_| {
+        vec![
+            NavItem {
+                label: t_string!(i18n, project),
+                path: "/projects",
+                icon: || IconHome().into_any(),
+            },
+            NavItem {
+                label: t_string!(i18n, code),
+                path: "/repos",
+                icon: || IconCode().into_any(),
+            },
+            NavItem {
+                label: t_string!(i18n, issue),
+                path: "/issues",
+                icon: || IconIssue().into_any(),
+            },
+            NavItem {
+                label: t_string!(i18n, merge_request),
+                path: "/merge_requests",
+                icon: || IconMerge().into_any(),
+            },
+            NavItem {
+                label: t_string!(i18n, settings),
+                path: "/settings",
+                icon: || IconSettings().into_any(),
+            },
+        ]
+    });
 
     let is_active = move |path: &str| {
         let path = path.to_string();
@@ -110,7 +133,7 @@ pub fn Sidebar(
                 {t!(i18n, menu)}
             </div>
 
-            {nav_items.into_iter().map(|item| {
+            {nav_items.get().into_iter().map(|item| {
                 let path = item.path;
                 let label = item.label;
                 let icon = item.icon;
@@ -124,7 +147,7 @@ pub fn Sidebar(
                         title=move || if collapsed.get() { label } else { "" }
                         on:click=move |ev| {
                             ev.prevent_default();
-                            let _ = navigate(path, NavigateOptions::default());
+                            navigate(path, NavigateOptions::default());
                         }
                     >
                         <span class="icon">{icon()}</span>
@@ -148,7 +171,11 @@ pub fn Sidebar(
                     class="collapse-toggle"
                     class:rotated=move || !collapsed.get()
                     on:click=move |_| collapsed.update(|c| *c = !*c)
-                    title=move || if collapsed.get() { "展开侧边栏" } else { "折叠侧边栏" }
+                    title=move || if collapsed.get() {
+                        t_string!(i18n, unfold_sidebar)
+                    } else {
+                        t_string!(i18n, fold_sidebar)
+                    }
                 >
                     <IconChevronLeft/>
                 </button>

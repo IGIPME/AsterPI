@@ -1,4 +1,4 @@
-pub mod navbar;
 pub mod layout;
+pub mod navbar;
 
 pub use layout::*;
