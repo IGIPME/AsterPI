@@ -6,6 +6,13 @@ $:
       services:
         - vscode
         - docker
+      stages:
+        - name: fetch rust deps
+          script: cargo fetch
+        - name: install playwright
+          script: cd tests/end2end && pnpm install && cd /workspace && npx playwright install --with-deps
+        - name: install docs deps
+          script: cd docs && pnpm install
 
 main:
   push:
