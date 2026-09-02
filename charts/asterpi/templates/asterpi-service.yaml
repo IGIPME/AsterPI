@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-asterpi
+  labels:
+    app: asterpi
+spec:
+  type: {{ .Values.asterpi.service.type }}
+  selector:
+    app: asterpi
+  ports:
+    - name: http
+      port: {{ .Values.asterpi.service.port }}
+      targetPort: 3000

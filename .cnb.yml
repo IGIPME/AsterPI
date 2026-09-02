@@ -6,30 +6,38 @@ $:
       services:
         - vscode
         - docker
+
 main:
   push:
-    - name: build-and-publish
+    # Pipeline 1：镜像构建与推送
+    - name: build-and-push-images
       docker:
         image: cnbcool/default-build-env:latest
       services:
         - docker
       stages:
-        - name: login docker registry
-          script: docker login ${CNB_DOCKER_REGISTRY} -u ${CNB_TOKEN_USER_NAME} -p ${CNB_TOKEN}
-
         - name: build asterpi
-          script: docker build -f registry/Dockerfile.AsterPI -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/asterpi:latest .
-        - name: push asterpi
+          script: docker build -f registry/Dockerfile.AsterPI -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/asterpi:latest -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/asterpi:${CNB_COMMIT_SHORT} .
+        - name: push asterpi latest
           script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/asterpi:latest
+        - name: push asterpi commit
+          script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/asterpi:${CNB_COMMIT_SHORT}
 
         - name: build docs
-          script: docker build -f registry/Dockerfile.docs -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/docs:latest .
-        - name: push docs
+          script: docker build -f registry/Dockerfile.docs -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/docs:latest -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/docs:${CNB_COMMIT_SHORT} .
+        - name: push docs latest
           script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/docs:latest
+        - name: push docs commit
+          script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/docs:${CNB_COMMIT_SHORT}
 
+    # Pipeline 2：Helm chart 打包与推送
+    - name: package-and-push-chart
+      docker:
+        image: alpine/helm
+      stages:
         - name: login helm registry
-          script: helm registry login ${CNB_HELM_REGISTRY} -u ${CNB_TOKEN_USER_NAME} -p ${CNB_TOKEN}
+          script: helm registry login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_HELM_REGISTRY}
         - name: package chart
           script: helm package charts/asterpi
         - name: push chart
-          script: helm push asterpi-*.tgz oci://${CNB_HELM_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}
+          script: helm push asterpi-0.1.0.tgz oci://${CNB_HELM_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}

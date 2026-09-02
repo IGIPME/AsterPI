@@ -1,7 +1,7 @@
 asterpi:
   replicas: 1
   image:
-    repository: docker.cnb.cool/IGIPME/AsterPI/asterpi
+    repository: docker.cnb.cool/igipme/asterpi/asterpi
     tag: latest
     pullPolicy: IfNotPresent
   service:
@@ -11,7 +11,7 @@ asterpi:
 docs:
   replicas: 1
   image:
-    repository: docker.cnb.cool/IGIPME/AsterPI/docs
+    repository: docker.cnb.cool/igipme/asterpi/docs
     tag: latest
     pullPolicy: IfNotPresent
   service:
