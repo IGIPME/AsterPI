@@ -1,6 +1,7 @@
 {
   "name": "rspress-doc-template",
   "version": "1.0.0",
+  "packageManager": "pnpm@10.26.2",
   "private": true,
   "type": "module",
   "scripts": {
