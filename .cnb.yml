@@ -1,0 +1,35 @@
+$:
+  vscode:
+    - docker:
+        build: .ide/Dockerfile
+        image: cnbcool/default-dev-env:latest
+      services:
+        - vscode
+        - docker
+main:
+  push:
+    - name: build-and-publish
+      docker:
+        image: cnbcool/default-build-env:latest
+      services:
+        - docker
+      stages:
+        - name: login docker registry
+          script: docker login ${CNB_DOCKER_REGISTRY} -u ${CNB_TOKEN_USER_NAME} -p ${CNB_TOKEN}
+
+        - name: build asterpi
+          script: docker build -f registry/Dockerfile.AsterPI -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/asterpi:latest .
+        - name: push asterpi
+          script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/asterpi:latest
+
+        - name: build docs
+          script: docker build -f registry/Dockerfile.docs -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/docs:latest .
+        - name: push docs
+          script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}/docs:latest
+
+        - name: login helm registry
+          script: helm registry login ${CNB_HELM_REGISTRY} -u ${CNB_TOKEN_USER_NAME} -p ${CNB_TOKEN}
+        - name: package chart
+          script: helm package charts/asterpi
+        - name: push chart
+          script: helm push asterpi-*.tgz oci://${CNB_HELM_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}

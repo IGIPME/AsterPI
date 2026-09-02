@@ -1,0 +1,32 @@
+# AsterPI Docker Compose
+
+services:
+  # AsterPI 主程序
+  asterpi:
+    build:
+      context: .
+      dockerfile: registry/Dockerfile.AsterPI
+    image: asterpi:latest
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - asterpi-net
+
+  # AsterPI Docs 站点
+  docs:
+    build:
+      context: .
+      dockerfile: registry/Dockerfile.docs
+    image: docs:latest
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    networks:
+      - asterpi-net
+
+networks:
+  asterpi-net:
+    driver: bridge
+    name: asterpi-net
+  

@@ -1,0 +1,19 @@
+asterpi:
+  replicas: 1
+  image:
+    repository: docker.cnb.cool/IGIPME/AsterPI/asterpi
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3000
+
+docs:
+  replicas: 1
+  image:
+    repository: docker.cnb.cool/IGIPME/AsterPI/docs
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 80
