@@ -23,6 +23,8 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh && \
     code-server --install-extension donjayamanne.githistory && \
     code-server --install-extension bierner.markdown-mermaid && \
     code-server --install-extension modular-mojotools.vscode-mojo && \
+    code-server --install-extension ms-python.python && \
+    code-server --install-extension ms-python.debugpy && \
     code-server --install-extension ms-python.vscode-python-envs && \
     code-server --install-extension renan-r-santos.pixi-code && \
     code-server --install-extension rust-lang.rust-analyzer && \
@@ -34,6 +36,5 @@ WORKDIR /workspace
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 ENV PATH="/root/.pixi/bin:${PATH}"
-ENV RUSTUP_AUTO_INSTALL=0
 ENV LANG C.UTF-8
 ENV LANGUAGE C.UTF-8
