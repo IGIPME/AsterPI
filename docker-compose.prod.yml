@@ -1,0 +1,27 @@
+# AsterPI Docker Production Compose
+
+services:
+    # AsterPI
+    asterpi:
+        image: ${ASTERPI_IMAGE:-docker.cnb.cool/igipme/asterpi/asterpi}:${ASTERPI_IMAGE_TAG:-latest}
+        container_name: asterpi
+        ports:
+            - "${ASTERPI_PORT:-3000}:3000"
+        restart: unless-stopped
+        networks:
+            - asterpi-net
+
+    # AsterPI Docs
+    docs:
+        image: ${DOCS_IMAGE:-docker.cnb.cool/igipme/asterpi/docs}:${DOCS_IMAGE_TAG:-latest}
+        container_name: docs
+        ports:
+            - "${DOCS_PORT:-8080}:80"
+        restart: unless-stopped
+        networks:
+            - asterpi-net
+
+networks:
+    asterpi-net:
+        driver: bridge
+        name: asterpi-net

@@ -2,9 +2,19 @@ pub mod components;
 pub mod icons;
 pub mod pages;
 
+use crate::components::Navbar;
+use crate::pages::{
+    DatasetsPage,
+    HardwarePage,
+    HomePage,
+    ModelsPage,
+    SpotlightPage,
+    StudioPage,
+};
 use leptos::prelude::*;
 use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
 use leptos_router::{
+    path,
     StaticSegment,
     components::{Route, Router, Routes},
 };
@@ -38,11 +48,22 @@ pub fn App() -> impl IntoView {
         <Stylesheet id="leptos" href="/pkg/asterpi.css"/>
 
         <Title text="AsterPI"/>
+
         <I18nContextProvider>
             <Router>
+                <Suspense fallback=move || view! { <div>Loading...</div> }>
+                    <Navbar />
+                </Suspense>
+
                 <main>
                     <Routes fallback=|| "Page not found.".into_view()>
-                        <Route path=StaticSegment("") view=|| view! {<h1>Hello World</h1>}/>
+                        <Route path=StaticSegment("") view=HomePage/>
+                        <Route path=path!("/home") view=HomePage/>
+                        <Route path=path!("/hardware") view=HardwarePage/>
+                        <Route path=path!("/models") view=ModelsPage/>
+                        <Route path=path!("/datasets") view=DatasetsPage/>
+                        <Route path=path!("/studio") view=StudioPage/>
+                        <Route path=path!("/spotlight") view=SpotlightPage/>
                     </Routes>
                 </main>
             </Router>
